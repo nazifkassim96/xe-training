@@ -1,8 +1,10 @@
 package com.magicWandInfo.magicWandAPI.Controller;
 
 import com.magicWandInfo.magicWandAPI.Entity.MagicWand;
+import com.magicWandInfo.magicWandAPI.Exception.MagicWandException;
 import com.magicWandInfo.magicWandAPI.Repository.MagicWandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:8072/"})
 @RestController
 @RequestMapping("/api")
+@Component
 public class MagicWandController {
 
     @Autowired
@@ -28,24 +31,30 @@ public class MagicWandController {
     }
 
     @PostMapping("/add")
-    public void addOrder(@RequestBody MagicWand magicWand){
-        MagicWand mw = new MagicWand();
-        mw.setMagicWandName(magicWand.getMagicWandName());
-        System.out.println("magicWand = " + mw.getMagicWandName() + " = "+magicWand.getMagicWandName());
-        mw.setDescriptionWand(magicWand.getDescriptionWand());
-        mw.setAgeLimit(magicWand.getAgeLimit());
-        mw.setStockWand(magicWand.getStockWand());
-        magicWandRepository.save(mw);
-    }
-
-    @DeleteMapping("delete/{orderId}")
-    public void deleteOrder(@PathVariable(value="wizardID")long id){
-        magicWandRepository.deleteById(id);
-    }
-
-    @PutMapping("update/{orderId}")
-    public void updateOrder(@RequestBody MagicWand magicWand){
+    public void addMagicWand(@RequestBody MagicWand magicWand) throws MagicWandException {
         magicWandRepository.save(magicWand);
+    }
+
+    @DeleteMapping("/delete/{magicWand_id}")
+    public void deleteMagicWand(@PathVariable(value="magicWand_id") Long magicWand_id) throws MagicWandException{
+//        magicWandRepository.deleteById(magicWand_id);
+
+        if(magicWandRepository.existsById(magicWand_id)){
+            magicWandRepository.deleteById(magicWand_id);
+        }else{
+            throw new MagicWandException(MagicWandException.INVALID_ID);
+        }
+    }
+
+    @PutMapping("/update")
+    public void updateMagicWand(@RequestBody MagicWand magicWand) throws MagicWandException{
+//        magicWandRepository.save(magicWand);
+
+        if(magicWandRepository.existsById(magicWand.getMagicWand_id())){
+            magicWandRepository.save(magicWand);
+        }else{
+            throw new MagicWandException(MagicWandException.INVALID_ID);
+        }
     }
 
 

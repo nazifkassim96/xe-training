@@ -6,24 +6,24 @@ import javax.persistence.*;
 @Table(name= "magic_wands")
 public class MagicWand {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
-    private Long id;
-    @Column(name="magic_wand_name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "magicWand_id", nullable = false)
+    private Long magicWand_id;
+    @Column(name="magicWandName")
     private String magicWandName;
-    @Column(name="desc_wand")
+    @Column(name="descriptionWand")
     private String descriptionWand;
-    @Column(name="age_limit")
+    @Column(name="ageLimit")
     private int ageLimit;
-    @Column(name="stock_wand")
+    @Column(name="stockWand")
     private int stockWand;
 
-    public Long getId() {
-        return id;
+    public Long getMagicWand_id() {
+        return magicWand_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMagicWand_id(Long magicWand_id) {
+        this.magicWand_id = magicWand_id;
     }
 
     public String getMagicWandName() {
